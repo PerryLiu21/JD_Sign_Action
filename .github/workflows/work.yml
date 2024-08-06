@@ -1,0 +1,33 @@
+name: Cloud check in action
+on:
+  push:
+    branches:
+      - main
+  watch:
+    types: started
+  workflow_dispatch:
+  schedule:
+    - cron: 55 1 * * *
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: user
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: init
+        run: npm install
+      - name: run
+        id: run
+        uses: nick-fields/retry@v2
+        env:
+          JD_COOKIE : ${{secrets.TY_USER_NAME}}
+          PUSH_KEY : ${{secrets.PUSH_KEY}}
+
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: npm start
