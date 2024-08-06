@@ -24,7 +24,7 @@ jobs:
         id: run
         uses: nick-fields/retry@v2
         env:
-          JD_COOKIE : ${{secrets.TY_USER_NAME}}
+          JD_COOKIE : ${{secrets.JD_COOKIE}}
           PUSH_KEY : ${{secrets.PUSH_KEY}}
 
         with:
